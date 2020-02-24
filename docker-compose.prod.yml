@@ -10,7 +10,7 @@ services:
     expose:
       - 8000
 
-  busybox:
+  healthcheck:
     image: byrnedo/alpine-curl
     command: http://rest:8000/_healthcheck
     depends_on:
