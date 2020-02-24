@@ -11,7 +11,7 @@ var (
 )
 
 func main()  {
-	flag.StringVar(&addr, "addr", "http://localhost:8080", "web server addr")
+	flag.StringVar(&addr, "addr", ":8000", "web server addr")
 	flag.Parse()
 
 	fmt.Printf("Going to rur a web server on %s\n", addr)

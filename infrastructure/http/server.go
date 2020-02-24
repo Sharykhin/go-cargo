@@ -30,10 +30,12 @@ func ListenAndServe(addr string) {
 	}()
 
 	<-interrupt
+	log.Println("Got interrupt signal, going to gracefully shutdown the server")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	log.Fatal(srv.Shutdown(ctx))
+	err := srv.Shutdown(ctx)
+	if err != nil {
+		log.Fatalf("Failed to gracefully shutdwon the server; %v", err)
+	}
 	log.Println("Server gracefully shutdown")
-
-
 }

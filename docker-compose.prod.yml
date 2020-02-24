@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+  rest:
+    build:
+      context: .
+      dockerfile: .docker/go/prod/Dockerfile
+      args:
+        build_path: "cmd/rest"
+    expose:
+      - 8000
+
+  busybox:
+    image: byrnedo/alpine-curl
+    command: http://rest:8000/_healthcheck
+    depends_on:
+      - rest
