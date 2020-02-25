@@ -3,4 +3,4 @@ Go Cargo
 
 ##### Author: 
 
-Sharykhin Siarhei (chapal@inbox.ru)
+Sharykhin Sergey (chapal@inbox.ru)
