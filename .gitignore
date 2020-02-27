@@ -2,3 +2,4 @@
 ./vendor
 ./rest
 .env
+bin

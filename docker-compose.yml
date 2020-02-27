@@ -7,7 +7,7 @@ services:
       dockerfile: .docker/go/dev/Dockerfile
       args:
         install_compile_deamon: "on"
-    command: bash -c 'CompileDaemon -log-prefix=false -build="go build -race -o rest ./cmd/rest" -command="./rest -addr :8000" --graceful-kill=true -color=true'
+    command: bash -c 'CompileDaemon -log-prefix=false -build="go build -race -o bin/rest ./cmd/rest" -command="./bin/rest -addr :8000" --graceful-kill=true -color=true'
     volumes:
       - type: bind
         source: .
