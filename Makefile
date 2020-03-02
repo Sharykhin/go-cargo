@@ -27,3 +27,7 @@ up: check-envs
 
 down:
 	docker-compose down
+
+protoc:
+	# example: make protoc path=domain/company/port/grpc/company.proto
+	docker run --rm -v $(CURDIR):/app -w /app grpc/go protoc --go_out=plugins=grpc:. ${path}
