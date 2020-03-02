@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package company;
+
+message createCompanyRequest {
+    string name = 1;
+    string country = 2;
+    string state = 3;
+    string city = 4;
+    string street = 5;
+    string number = 6;
+}
+
+message createCompanyResponse {
+    uint64 id = 1;
+}
+
+service createCompany {
+    rpc Hello(createCompanyRequest) returns (createCompanyResponse) {};
+}
