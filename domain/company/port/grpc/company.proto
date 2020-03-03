@@ -12,7 +12,7 @@ message createCompanyRequest {
 }
 
 message createCompanyResponse {
-    uint64 id = 1;
+    string uuid = 1;
 }
 
 service company {

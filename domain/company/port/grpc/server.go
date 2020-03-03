@@ -15,6 +15,7 @@ import (
 
 type (
 	server struct {
+		handler service.CompanyService
 	}
 )
 
@@ -40,10 +41,9 @@ func handleError(err error) error {
 	return err
 }
 
+// CreateCompany create a new company in a system
 func (s *server) CreateCompany(ctx context.Context, req *CreateCompanyRequest) (*CreateCompanyResponse, error) {
-	handler := service.CompanyServiceHandler{}
-
-	company, err := handler.Create(ctx, service.CreateCompanyRequest{})
+	company, err := s.handler.Create(ctx, service.CreateCompanyRequest{})
 
 	if err != nil {
 		err = handleError(err)
@@ -52,10 +52,11 @@ func (s *server) CreateCompany(ctx context.Context, req *CreateCompanyRequest) (
 	}
 
 	return &CreateCompanyResponse{
-		Id: uint64(company.ID),
+		Uuid: string(company.UUID),
 	}, nil
 }
 
+// ListenAndServe starts GRPC server and listens incoming requests
 func ListenAndServe(addr string) error {
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
@@ -63,7 +64,10 @@ func ListenAndServe(addr string) error {
 	}
 
 	s := grpc.NewServer()
-	RegisterCompanyServer(s, &server{})
+
+	RegisterCompanyServer(s, &server{
+		handler: service.NewCompanyHandler(),
+	})
 
 	return s.Serve(lis)
 }

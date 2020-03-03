@@ -18,3 +18,7 @@ func (h CompanyServiceHandler) Create(ctx context.Context, r CreateCompanyReques
 
 	return nil, nil
 }
+
+func NewCompanyHandler() *CompanyServiceHandler {
+	return &CompanyServiceHandler{}
+}
