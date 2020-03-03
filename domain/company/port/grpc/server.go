@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/reflection"
 	"google.golang.org/grpc/status"
 	"net"
 
@@ -71,6 +72,7 @@ func ListenAndServe(addr string) error {
 			sql.NewCompanyRepository(nil),
 		),
 	})
+	reflection.Register(s)
 
 	return s.Serve(lis)
 }

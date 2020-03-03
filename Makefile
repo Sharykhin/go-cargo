@@ -17,6 +17,9 @@ ifndef GRPC_COMPANY_PORT
 	@read line; if [ $$line == "n" ]; then echo aborting; exit 1 ; fi
 endif
 
+up-grpc: check-envs
+	docker-compose up postgres grpc-company
+
 up: check-envs
 	docker-compose up
 
@@ -42,3 +45,12 @@ migrate-down:
 migrate-status:
 	# example: make migrate-status path=domain/company/infrustructure/database/migration
 	docker-compose run sql-migration goose -dir ${path} postgres "host=postgres user=postgres password=root dbname=gocargo sslmode=disable port=5432" status
+
+grpc-cli-ls:
+	# read more: https://github.com/grpc/grpc-go/blob/master/Documentation/server-reflection-tutorial.md
+	# example: make grpc-cli-ls path="company.company" port=50052
+	docker run -v $(pwd):/defs --rm -it --net go_cargo namely/grpc-cli ls docker.for.mac.localhost:${port} ${path}
+
+grpc-cli-call:
+	# example: make grpc-cli-call path='CreateCompany ""' port=50052
+	docker run -v $(pwd):/defs --rm -it --net go_cargo namely/grpc-cli call docker.for.mac.localhost:${port} ${path}
