@@ -6,8 +6,9 @@ const (
 
 type (
 	ValidationError struct {
-		Code int
+		Code    int
 		Message string
+		Field   string
 	}
 )
 
@@ -15,9 +16,10 @@ func (e ValidationError) Error() string {
 	return e.Message
 }
 
-func NewValidationError(code int, message string) ValidationError {
+func NewValidationError(code int, message string, field string) ValidationError {
 	return ValidationError{
-		Code: code,
+		Code:    code,
 		Message: message,
+		Field:   field,
 	}
 }
