@@ -17,6 +17,22 @@ services:
     ports:
       - ${REST_PORT}:8000
 
+  grpc-company:
+    build:
+      context: .
+      dockerfile: .docker/go/dev/Dockerfile
+      args:
+        install_compile_deamon: "on"
+      command: bash -c 'CompileDaemon -log-prefix=false -build="go build -race -o bin/company ./cmd/grpc/company" -command="./bin/company -addr :50051" --graceful-kill=true -color=true'
+      volumes:
+        - type: bind
+          source: .
+          target: /app
+      expose:
+        - 50051
+      ports:
+        - ${GRPC_COMPANY_PORT}:50051
+
   postgres:
     image: postgres:11.6
     environment:

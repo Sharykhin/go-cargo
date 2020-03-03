@@ -10,10 +10,10 @@ var (
 	addr string
 )
 
-func main()  {
+func main() {
 	flag.StringVar(&addr, "addr", ":8000", "web server addr")
 	flag.Parse()
 
-	fmt.Printf("Going to rur a web server on %s\n", addr)
+	fmt.Printf("Run a web server on %s\n", addr)
 	http.ListenAndServe(addr)
 }
