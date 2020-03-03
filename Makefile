@@ -26,3 +26,11 @@ down:
 protoc:
 	# example: make protoc path=domain/company/port/grpc/company.proto
 	docker run --rm -v $(CURDIR):/app -w /app grpc/go protoc --go_out=plugins=grpc:. ${path}
+
+migration:
+	# example: make migration path=domain/company/infrustructure/database/migration name=crate_company_table
+	docker-compose run sql-migration goose -dir ${path} create ${name} sql
+
+migrate-up:
+	# example: make migrate-up path=domain/company/infrustructure/database/migration
+	docker-compose run sql-migration goose -dir ${path} postgres "host=postgres user=postgres password=root dbname=gocargo sslmode=disable port=5432" up

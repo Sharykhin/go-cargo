@@ -1,12 +1,27 @@
 version: '3.7'
 
 services:
+  sql-migration:
+    build:
+      context: .
+      dockerfile: .docker/go/dev/Dockerfile
+      args:
+        install_compile_deamon: "off"
+        install_goose: "on"
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+    networks:
+      - go_cargo
+
   rest:
     build:
       context: .
       dockerfile: .docker/go/dev/Dockerfile
       args:
         install_compile_deamon: "on"
+        install_goose: "off"
     command: bash -c 'CompileDaemon -log-prefix=false -build="go build -race -o bin/rest ./cmd/rest" -command="./bin/rest -addr :8000" --graceful-kill=true -color=true'
     volumes:
       - type: bind
@@ -16,6 +31,8 @@ services:
       - 8000
     ports:
       - ${REST_PORT}:8000
+    networks:
+      - go_cargo
 
   grpc-company:
     build:
@@ -23,28 +40,40 @@ services:
       dockerfile: .docker/go/dev/Dockerfile
       args:
         install_compile_deamon: "on"
-      command: bash -c 'CompileDaemon -log-prefix=false -build="go build -race -o bin/company ./cmd/grpc/company" -command="./bin/company -addr :50051" --graceful-kill=true -color=true'
-      volumes:
-        - type: bind
-          source: .
-          target: /app
-      expose:
-        - 50051
-      ports:
-        - ${GRPC_COMPANY_PORT}:50051
+        install_goose: "off"
+    command: bash -c 'CompileDaemon -log-prefix=false -build="go build -race -o bin/company ./cmd/grpc/company" -command="./bin/company -addr :50051" --graceful-kill=true -color=true'
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+    expose:
+      - 50051
+    ports:
+      - ${GRPC_COMPANY_PORT}:50051
+    depends_on:
+      - postgres
+    networks:
+      - go_cargo
 
   postgres:
     image: postgres:11.6
     environment:
-      - POSTGRES_USER=postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: gocargo
     expose:
       - 5432
     ports:
       - ${PG_PORT}:5432
     volumes:
       - pgdata11:/var/lib/postgresql/data
+    networks:
+      - go_cargo
 
 volumes:
   pgdata11:
 
-
+networks:
+  go_cargo:
+    driver: bridge
+    name: "go_cargo"
