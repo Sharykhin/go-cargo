@@ -1,24 +1,21 @@
 package service
 
 import (
-	"Sharykhin/go-cargo/domain/company/model"
 	"context"
+
+	"Sharykhin/go-cargo/domain/company/model"
 )
 
 type (
-	CreateCompanyRequest struct {
-		Country string
-		State string
-		City string
-		Street string
-		Number string
-	}
-
-	CompanyService interface {
-		Create(ctx context.Context, request CreateCompanyRequest) (*model.Company, error)
-	}
-
 	CompanyServiceHandler struct {
 
 	}
 )
+
+func (h CompanyServiceHandler) Create(ctx context.Context, r CreateCompanyRequest) (*model.Company, error) {
+    if r.Country == "" {
+    	return  nil, NewValidationError(Empty, "Country can not be empty")
+	}
+
+	return nil, nil
+}
