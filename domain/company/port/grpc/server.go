@@ -1,6 +1,7 @@
 package company
 
 import (
+	"Sharykhin/go-cargo/domain/company/repository/sql"
 	"Sharykhin/go-cargo/domain/company/service"
 	"errors"
 	"fmt"
@@ -66,7 +67,9 @@ func ListenAndServe(addr string) error {
 	s := grpc.NewServer()
 
 	RegisterCompanyServer(s, &server{
-		handler: service.NewCompanyHandler(),
+		handler: service.NewCompanyHandler(
+			sql.NewCompanyRepository(nil),
+		),
 	})
 
 	return s.Serve(lis)
