@@ -3,11 +3,12 @@ package postgres
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/lib/pq"
+
+	_ "github.com/lib/pq" // import postgers dependencies
 )
 
 // NewConnection establishes a new connection with Postgres
-func NewConnection(user, password, host, port, dbname string) *sql.DB {
+func NewConnection(user, password, host, dbname string, port int) *sql.DB {
 	source := fmt.Sprintf(
 		"host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		host,
