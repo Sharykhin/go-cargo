@@ -5,13 +5,15 @@ import (
 	"Sharykhin/go-cargo/domain/company/service"
 	"errors"
 	"fmt"
+	"net"
+
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/reflection"
 	"google.golang.org/grpc/status"
-	"net"
 
 	"context"
+
 	"google.golang.org/grpc"
 )
 
@@ -22,9 +24,8 @@ type (
 )
 
 func handleError(err error) error {
-	if errors.Is(err, service.ValidationError{}) {
-		var vErr service.ValidationError
-		errors.As(err, &vErr)
+	var vErr service.ValidationError
+	if errors.As(err, &vErr) {
 		st := status.New(codes.FailedPrecondition, "Validation Failed")
 
 		v := &errdetails.BadRequest_FieldViolation{
