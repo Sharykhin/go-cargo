@@ -6,6 +6,7 @@ import (
 )
 
 type (
+	// CompanyRepository describes storage interface
 	CompanyRepository interface {
 		CreateCompany(ctx context.Context) (*aggregate.CompanyAggregate, error)
 	}

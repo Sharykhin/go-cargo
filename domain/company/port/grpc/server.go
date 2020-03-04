@@ -69,8 +69,11 @@ func ListenAndServe(addr string) error {
 	s := grpc.NewServer()
 
 	RegisterCompanyServer(s, &server{
-		handler: service.NewCompanyHandler(
-			sql.NewCompanyRepository(nil),
+		handler: service.NewSQLTransactionalDecorator(
+			service.NewCompanyHandler(
+				sql.NewCompanyRepository(nil),
+			),
+			nil,
 		),
 	})
 	reflection.Register(s)

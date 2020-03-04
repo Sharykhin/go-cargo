@@ -1,12 +1,13 @@
 package service
 
 const (
-	Empty = 0
+	FieldEmpty ErrorCode = iota
 )
 
 type (
+	ErrorCode       int
 	ValidationError struct {
-		Code    int
+		Code    ErrorCode
 		Message string
 		Field   string
 	}
@@ -16,7 +17,7 @@ func (e ValidationError) Error() string {
 	return e.Message
 }
 
-func NewValidationError(code int, message string, field string) ValidationError {
+func NewValidationError(code ErrorCode, message string, field string) ValidationError {
 	return ValidationError{
 		Code:    code,
 		Message: message,
