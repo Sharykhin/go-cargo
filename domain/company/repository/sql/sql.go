@@ -9,11 +9,13 @@ import (
 )
 
 type (
+	// CompanyRepository is a concrete implementation of company repository interface
 	CompanyRepository struct {
 		db *sql.DB
 	}
 )
 
+// CreateCompany inserts a new row into companies table
 func (r CompanyRepository) CreateCompany(ctx context.Context) (*aggregate.CompanyAggregate, error) {
 
 	tx, ok := ctx.Value("sql-transaction-tx").(*sql.Tx)
@@ -29,6 +31,7 @@ func (r CompanyRepository) CreateCompany(ctx context.Context) (*aggregate.Compan
 	return nil, nil
 }
 
+// NewCompanyRepository is a function constructor that returns a new instance of a company repository implementation
 func NewCompanyRepository(db *sql.DB) *CompanyRepository {
 	repo := CompanyRepository{
 		db: db,
