@@ -7,7 +7,10 @@ import (
 )
 
 type (
-	ContextKey                string
+	//ContextKey is an alias of string that wiil be used with context.WithValue to prevent potential collisions
+	ContextKey string
+	// SQLTransactionalDecorator is a decorator aroung CompanyService interface
+	// that wraps functions in sql transaction
 	SQLTransactionalDecorator struct {
 		service CompanyService
 		db      *sql.DB
@@ -15,6 +18,9 @@ type (
 )
 
 var (
+	//TODO: since context keys can be used at leaset on repository level, you should move it out of this package.
+
+	// SQLTransactionTX it's a context key regarding sql transaction struct
 	SQLTransactionTX = ContextKey("sql-transaction-tx")
 )
 
@@ -32,12 +38,14 @@ func (d SQLTransactionalDecorator) Create(ctx context.Context, request CreateCom
 			tx.Commit()
 		}
 	}()
-	ctx = context.WithValue(ctx, "sql-transaction-tx", tx)
+	ctx = context.WithValue(ctx, SQLTransactionTX, tx)
 	c, err = d.service.Create(ctx, request)
 
 	return c, err
 }
 
+// NewSQLTransactionalDecorator is a function constructor
+// that returns a new instance of SQLTransactionalDecorator
 func NewSQLTransactionalDecorator(
 	service CompanyService,
 	db *sql.DB,
