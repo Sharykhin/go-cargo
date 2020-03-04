@@ -16,7 +16,8 @@ cp .env.example .env
 
 #### Work-flow:
 General workflow:
-Company want to get some goods of another company. It makes an order and then application finds the nearest warehouse for where goods will be kept for some period of time.
+
+Company wants to get some goods from another company. It makes an order and then the application finds the nearest warehouse where goods will be kept for some period of time.
 
 1. Domain Company makes an order of some goods and send an event
 3. Domain Router catches that event and based on criteria like total weights of all order concurrenly try to find the nearest warehour that fits all requirements (days to keep, available space at date arrival) and register that order in a warehouse
