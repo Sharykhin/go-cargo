@@ -1,5 +1,11 @@
 package model
 
+import (
+	"log"
+
+	uuid "github.com/nu7hatch/gouuid"
+)
+
 type (
 	// UUID would rather to be used across the application and should be used as general identificator
 	// for a company
@@ -36,4 +42,14 @@ func NewCompnay(UUID UUID, country, state, city, street, number string) *Company
 	}
 
 	return &company
+}
+
+// NewUUID generates a new UUID of version 4
+func NewUUID() UUID {
+	u, err := uuid.NewV4()
+	if err != nil {
+		log.Panicf("failed to generate uuid v4: %v", err)
+	}
+
+	return UUID(u.String())
 }
