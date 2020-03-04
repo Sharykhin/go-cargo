@@ -32,19 +32,19 @@ protoc:
 
 migration:
 	# example: make migration name=crate_company_table
-	docker-compose run sql-migration goose -dir ./infrustructure/database/migration create ${name} sql
+	docker-compose run sql-migration goose -dir infrustructure/database/migration create ${name} sql
 
 migrate-up:
 	# example: make migrate-up
-	docker-compose run sql-migration goose -dir ./infrustructure/database/migration postgres "host=postgres user=postgres password=root dbname=gocargo sslmode=disable port=5432" up
+	docker-compose run sql-migration goose -dir infrastructure/database/migration postgres "host=postgres user=postgres password=root dbname=gocargo sslmode=disable port=5432" up
 
 migrate-down:
 	# example: make migrate-down
-	docker-compose run sql-migration goose -dir ./infrustructure/database/migration postgres "host=postgres user=postgres password=root dbname=gocargo sslmode=disable port=5432" down
+	docker-compose run sql-migration goose -dir infrastructure/database/migration postgres "host=postgres user=postgres password=root dbname=gocargo sslmode=disable port=5432" down
 
 migrate-status:
 	# example: make migrate-status
-	docker-compose run sql-migration goose -dir ./infrustructure/database/migration postgres "host=postgres user=postgres password=root dbname=gocargo sslmode=disable port=5432" status
+	docker-compose run sql-migration goose -dir infrastructure/database/migration postgres "host=postgres user=postgres password=root dbname=gocargo sslmode=disable port=5432" status
 
 grpc-cli-ls:
 	# read more: https://github.com/grpc/grpc-go/blob/master/Documentation/server-reflection-tutorial.md
