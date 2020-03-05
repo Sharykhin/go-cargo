@@ -2,8 +2,10 @@ package service
 
 import (
 	"Sharykhin/go-cargo/domain/company/repository"
+	"Sharykhin/go-cargo/domain/company/repository/request"
 	"context"
 	"fmt"
+	"strings"
 
 	"Sharykhin/go-cargo/domain/company/model"
 )
@@ -17,24 +19,41 @@ type (
 )
 
 // Create creates a new company
-func (h CompanyServiceHandler) Create(ctx context.Context, r CreateCompanyRequest) (*model.Company, error) {
+func (h *CompanyServiceHandler) Create(ctx context.Context, req CreateCompanyRequest) (*model.Company, error) {
 
-	if err := h.validate(&r); err != nil {
+	if err := h.validate(&req); err != nil {
 		return nil, err
 	}
 
-	agg, err := h.companyRepository.CreateCompany(ctx)
+	uuid := model.NewUUID()
+
+	agg, err := h.companyRepository.CreateCompany(
+		ctx,
+		request.CreateCompany{
+			string(uuid),
+			req.Country,
+			req.State,
+			req.City,
+			req.Street,
+			req.Number,
+		},
+	)
 	if err != nil {
 		return nil, fmt.Errorf("Could not create company: %v", err)
 	}
 
-	company := model.NewCompnay("SOMEUUID", agg.Country, agg.State, agg.City, agg.Street, agg.Number)
+	company := model.NewCompnay(uuid, agg.Country, agg.State, agg.City, agg.Street, agg.Number)
+
 	return company, nil
 }
 
-func (h CompanyServiceHandler) validate(r *CreateCompanyRequest) error {
-	if r.Country == "" {
+func (h CompanyServiceHandler) validate(req *CreateCompanyRequest) error {
+	if strings.Trim(req.Country, " ") == "" {
 		return NewValidationError(FieldEmpty, "Country can not be empty", "Country")
+	}
+
+	if strings.Trim(req.City, " ") == "" {
+		return NewValidationError(FieldEmpty, "City can not be empty", "City")
 	}
 
 	return nil

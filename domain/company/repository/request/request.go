@@ -1,0 +1,13 @@
+package request
+
+type (
+	// CreateCompany represents income request to create a new company in repository
+	CreateCompany struct {
+		UUID    string
+		Country string
+		State   string
+		City    string
+		Street  string
+		Number  string
+	}
+)
