@@ -24,12 +24,28 @@ func (r CompanyRepository) CreateCompany(ctx context.Context, req request.Create
 		fmt.Println("use transacton", tx)
 	}
 
-	_, err := tx.Exec("INSERT INTO companies(uuid, name, created_at) values($1, $2, $3)", "123", "name", time.Now().UTC())
+	var compnayID uint64
+	err := r.db.QueryRow(
+		"INSERT INTO companies(uuid, name, created_at) values($1, $2, $3) RETURNING id",
+		req.UUID,
+		req.Name,
+		time.Now().UTC(),
+	).Scan(&compnayID)
+
 	if err != nil {
 		return nil, fmt.Errorf("failed to insert a new row into companies table")
 	}
+	agg := aggregate.CompanyAggregate{
+		ID:      compnayID,
+		UUID:    req.UUID,
+		Country: req.Country,
+		State:   req.State,
+		City:    req.City,
+		Street:  req.Street,
+		Number:  req.Number,
+	}
 
-	return nil, nil
+	return &agg, nil
 }
 
 // NewCompanyRepository is a function constructor that returns a new instance of a company repository implementation

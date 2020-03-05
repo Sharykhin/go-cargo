@@ -8,9 +8,9 @@ import (
 )
 
 // NewConnection establishes a new connection with Postgres
-func NewConnection(user, password, host, dbname string, port int) *sql.DB {
+func NewConnection(user, password, host, dbname, port string) *sql.DB {
 	source := fmt.Sprintf(
-		"host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
+		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		host,
 		port,
 		user,
@@ -20,6 +20,10 @@ func NewConnection(user, password, host, dbname string, port int) *sql.DB {
 
 	db, err := sql.Open("postgres", source)
 	if err != nil {
+		panic(err)
+	}
+
+	if err := db.Ping(); err != nil {
 		panic(err)
 	}
 	//defer db.Close()

@@ -3,9 +3,11 @@ package company
 import (
 	"Sharykhin/go-cargo/domain/company/repository/sql"
 	"Sharykhin/go-cargo/domain/company/service"
+	"Sharykhin/go-cargo/infrastructure/database/postgres"
 	"errors"
 	"fmt"
 	"net"
+	"os"
 
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
@@ -46,7 +48,15 @@ func handleError(err error) error {
 
 // CreateCompany create a new company in a system
 func (s *server) CreateCompany(ctx context.Context, req *CreateCompanyRequest) (*CreateCompanyResponse, error) {
-	company, err := s.handler.Create(ctx, service.CreateCompanyRequest{})
+	fmt.Println("Country", req.GetCountry())
+	company, err := s.handler.Create(ctx, service.CreateCompanyRequest{
+		Name:    req.GetName(),
+		Country: req.GetCountry(),
+		State:   req.GetState(),
+		City:    req.GetCity(),
+		Street:  req.GetStreet(),
+		Number:  req.GetNumber(),
+	})
 
 	if err != nil {
 		err = handleError(err)
@@ -67,13 +77,20 @@ func ListenAndServe(addr string) error {
 	}
 
 	s := grpc.NewServer()
+	db := postgres.NewConnection(
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_PASS"),
+		os.Getenv("DB_HOST"),
+		os.Getenv("DB_NAME"),
+		os.Getenv("DB_PORT"),
+	)
 
 	RegisterCompanyServer(s, &server{
 		handler: service.NewSQLTransactionalDecorator(
 			service.NewCompanyHandler(
-				sql.NewCompanyRepository(nil),
+				sql.NewCompanyRepository(db),
 			),
-			nil,
+			db,
 		),
 	})
 	reflection.Register(s)

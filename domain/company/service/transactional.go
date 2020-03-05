@@ -25,7 +25,7 @@ var (
 )
 
 // Create wraps excution code into sql transaction
-func (d SQLTransactionalDecorator) Create(ctx context.Context, request CreateCompanyRequest) (c *model.Company, err error) {
+func (d SQLTransactionalDecorator) Create(ctx context.Context, req CreateCompanyRequest) (c *model.Company, err error) {
 	tx, err := d.db.Begin()
 	if err != nil {
 		return nil, err
@@ -39,7 +39,7 @@ func (d SQLTransactionalDecorator) Create(ctx context.Context, request CreateCom
 		}
 	}()
 	ctx = context.WithValue(ctx, SQLTransactionTX, tx)
-	c, err = d.service.Create(ctx, request)
+	c, err = d.service.Create(ctx, req)
 
 	return c, err
 }

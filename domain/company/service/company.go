@@ -31,6 +31,7 @@ func (h *CompanyServiceHandler) Create(ctx context.Context, req CreateCompanyReq
 		ctx,
 		request.CreateCompany{
 			string(uuid),
+			req.Name,
 			req.Country,
 			req.State,
 			req.City,

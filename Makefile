@@ -49,8 +49,8 @@ migrate-status:
 grpc-cli-ls:
 	# read more: https://github.com/grpc/grpc-go/blob/master/Documentation/server-reflection-tutorial.md
 	# example: make grpc-cli-ls path="company.company" port=50052
-	docker run -v $(pwd):/defs --rm -it --net go_cargo namely/grpc-cli ls docker.for.mac.localhost:${port} ${path}
+	docker run -v $(CURDIR):/defs --rm -it --net go_cargo namely/grpc-cli ls docker.for.mac.localhost:${port} ${path}
 
 grpc-cli-call:
 	# example: make grpc-cli-call path='CreateCompany ""' port=50052
-	docker run -v $(pwd):/defs --rm -it --net go_cargo namely/grpc-cli call docker.for.mac.localhost:${port} ${path}
+	docker run -v $(CURDIR):/defs --rm -it --net go_cargo namely/grpc-cli call docker.for.mac.localhost:${port} ${path}
