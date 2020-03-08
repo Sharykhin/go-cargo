@@ -11,4 +11,15 @@ type (
 	CompanyRepository interface {
 		CreateCompany(ctx context.Context, req request.CreateCompany) (*aggregate.CompanyAggregate, error)
 	}
+
+	// CreateCompany represents income request to create a new company in repository
+	CreateCompany struct {
+		UUID    string
+		Name    string
+		Country string
+		State   string
+		City    string
+		Street  string
+		Number  string
+	}
 )
