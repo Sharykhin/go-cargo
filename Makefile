@@ -32,7 +32,7 @@ protoc:
 
 migration:
 	# example: make migration name=crate_company_table
-	docker-compose run sql-migration goose -dir infrustructure/database/migration create ${name} sql
+	docker-compose run sql-migration goose -dir infrastructure/database/migration create ${name} sql
 
 migrate-up:
 	# example: make migrate-up
