@@ -1,6 +1,7 @@
 package sql
 
 import (
+	"Sharykhin/go-cargo/domain/company"
 	"Sharykhin/go-cargo/domain/company/repository/aggregate"
 	"Sharykhin/go-cargo/domain/company/repository/request"
 	"context"
@@ -19,7 +20,7 @@ type (
 // CreateCompany inserts a new row into companies table
 func (r CompanyRepository) CreateCompany(ctx context.Context, req request.CreateCompany) (*aggregate.CompanyAggregate, error) {
 
-	tx, ok := ctx.Value("sql-transaction-tx").(*sql.Tx)
+	tx, ok := ctx.Value(company.SQLTransactionTX).(*sql.Tx)
 	if ok {
 		fmt.Println("use transacton", tx)
 	}

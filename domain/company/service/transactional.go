@@ -1,27 +1,19 @@
 package service
 
 import (
+	"Sharykhin/go-cargo/domain/company"
 	"Sharykhin/go-cargo/domain/company/model"
 	"context"
 	"database/sql"
 )
 
 type (
-	//ContextKey is an alias of string that wiil be used with context.WithValue to prevent potential collisions
-	ContextKey string
 	// SQLTransactionalDecorator is a decorator aroung CompanyService interface
 	// that wraps functions in sql transaction
 	SQLTransactionalDecorator struct {
 		service CompanyService
 		db      *sql.DB
 	}
-)
-
-var (
-	//TODO: since context keys can be used at leaset on repository level, you should move it out of this package.
-
-	// SQLTransactionTX it's a context key regarding sql transaction struct
-	SQLTransactionTX = ContextKey("sql-transaction-tx")
 )
 
 // Create wraps excution code into sql transaction
@@ -38,7 +30,7 @@ func (d SQLTransactionalDecorator) Create(ctx context.Context, req CreateCompany
 			tx.Commit()
 		}
 	}()
-	ctx = context.WithValue(ctx, SQLTransactionTX, tx)
+	ctx = context.WithValue(ctx, company.SQLTransactionTX, tx)
 	c, err = d.service.Create(ctx, req)
 
 	return c, err
