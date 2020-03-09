@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package company;
 
-message createCompanyRequest {
+message CreateCompanyRequest {
     string name = 1;
     string country = 2;
     string state = 3;
@@ -11,10 +11,10 @@ message createCompanyRequest {
     string number = 6;
 }
 
-message createCompanyResponse {
+message CreateCompanyResponse {
     string uuid = 1;
 }
 
-service company {
-    rpc CreateCompany(createCompanyRequest) returns (createCompanyResponse) {};
+service CompanyService {
+    rpc CreateCompany(CreateCompanyRequest) returns (CreateCompanyResponse) {};
 }
