@@ -4,7 +4,8 @@ CREATE TABLE companies (
 	id serial NOT NULL,
 	uuid char(36) NOT NULL,
 	name varchar(80) NOT NULL,
-	created_at timestamp NOT NULL
+	created_at timestamp NOT NULL,
+	PRIMARY KEY (uuid)
 );
 
 -- +goose Down
