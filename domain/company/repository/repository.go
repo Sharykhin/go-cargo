@@ -20,6 +20,7 @@ type (
 		State   string
 		City    string
 		Street  string
+		Zip     string
 		Number  string
 	}
 )

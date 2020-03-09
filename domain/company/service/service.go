@@ -13,6 +13,7 @@ type (
 		State   string
 		City    string
 		Street  string
+		Zip     string
 		Number  string
 	}
 	// CompanyService describes a general interface around company model

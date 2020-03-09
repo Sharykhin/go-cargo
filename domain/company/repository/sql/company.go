@@ -21,12 +21,12 @@ type (
 func (r CompanyRepository) CreateCompany(ctx context.Context, req request.CreateCompany) (*aggregate.CompanyAggregate, error) {
 
 	tx, ok := ctx.Value(company.SQLTransactionTX).(*sql.Tx)
-	if ok {
-		fmt.Println("use transacton", tx)
+	if !ok {
+		tx = r.db
 	}
 
 	var compnayID uint64
-	err := r.db.QueryRow(
+	err := tx.QueryRow(
 		"INSERT INTO companies(uuid, name, created_at) values($1, $2, $3) RETURNING id",
 		req.UUID,
 		req.Name,
@@ -43,6 +43,7 @@ func (r CompanyRepository) CreateCompany(ctx context.Context, req request.Create
 		State:   req.State,
 		City:    req.City,
 		Street:  req.Street,
+		Zip:     req.Zip,
 		Number:  req.Number,
 	}
 

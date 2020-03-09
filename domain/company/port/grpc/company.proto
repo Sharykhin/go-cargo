@@ -8,7 +8,8 @@ message CreateCompanyRequest {
     string state = 3;
     string city = 4;
     string street = 5;
-    string number = 6;
+    string zip = 6;
+    string number = 7;
 }
 
 message CreateCompanyResponse {

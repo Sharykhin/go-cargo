@@ -20,7 +20,6 @@ type (
 
 // Create creates a new company
 func (h *CompanyServiceHandler) Create(ctx context.Context, req CreateCompanyRequest) (*model.Company, error) {
-
 	if err := h.validate(&req); err != nil {
 		return nil, err
 	}
@@ -36,6 +35,7 @@ func (h *CompanyServiceHandler) Create(ctx context.Context, req CreateCompanyReq
 			req.State,
 			req.City,
 			req.Street,
+			req.Zip,
 			req.Number,
 		},
 	)

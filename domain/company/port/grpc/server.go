@@ -55,6 +55,7 @@ func (s *server) CreateCompany(ctx context.Context, req *CreateCompanyRequest) (
 		State:   req.GetState(),
 		City:    req.GetCity(),
 		Street:  req.GetStreet(),
+		Zip:     req.GetZip(),
 		Number:  req.GetNumber(),
 	})
 
