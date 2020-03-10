@@ -86,7 +86,7 @@ func ListenAndServe(addr string) error {
 		os.Getenv("DB_PORT"),
 	)
 
-	RegisterCompanyServer(s, &server{
+	RegisterCompanyServiceServer(s, &server{
 		handler: service.NewSQLTransactionalDecorator(
 			service.NewCompanyHandler(
 				sql.NewCompanyRepository(db),
